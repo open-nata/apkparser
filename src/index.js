@@ -35,17 +35,17 @@ function shell(cmd) {
 
 function parseDoc(doc) {
   const manifest = new Manifest()
-  //packageName
+  // packageName
   const manifestNode = doc.getElementsByTagName('manifest')[0]
   manifest.packageName = manifestNode.getAttribute('package')
 
-  //permissions
+  // permissions
   const permissionsNodes = doc.getElementsByTagName('uses-permission')
   _.forEach(permissionsNodes, permissionsNode => {
-   manifest.addPermission(permissionsNode.getAttribute('android:name'))
+    manifest.addPermission(permissionsNode.getAttribute('android:name'))
   })
 
-  //activities and main activity
+  // activities and main activity
   const applicationNode = doc.getElementsByTagName('application')[0]
 
   const activitiesNodes = applicationNode.getElementsByTagName('activity')
@@ -53,39 +53,25 @@ function parseDoc(doc) {
     const activityName = activityNode.getAttribute('android:name')
 
 
-    if(activityNode.hasChildNodes()) {
+    if (activityNode.hasChildNodes()) {
       const actions = activityNode.getElementsByTagName('action')
-      _.forEach(actions, node=> {
-            if(node.nodeName === 'action' && node.getAttribute('android:name') === 'android.intent.action.MAIN') {
-              manifest.entry = activityName
-            }
+      _.forEach(actions, node => {
+        if (node.nodeName === 'action' &&
+          node.getAttribute('android:name') === 'android.intent.action.MAIN') {
+          manifest.entry = activityName
+        }
       })
     }
     manifest.addActivity(activityName)
   })
 
   const receiversNodes = applicationNode.getElementsByTagName('receiver')
-  _.forEach(receiversNodes, receiverNode=> {
+  _.forEach(receiversNodes, receiverNode => {
     manifest.addReceiver(receiverNode.getAttribute('android:name'))
   })
 
   return manifest
 }
-
-async function parse (apkPath) {
-  const target = `${os.tmpdir()}/apktoolDecodes`
-  const cmd = `java -jar ${apktoolPath} d ${apkPath} -f -o ${target}`
-  await shell(cmd)
-  const MainfestFilePath = `${target}/AndroidManifest.xml`
-  const doc = await parseManifest(MainfestFilePath)
-  return parseDoc(doc)
-}
-
-async function parseXML (MainfestFilePath) {
-  const doc = await parseManifest(MainfestFilePath)
-  return parseDoc(doc)
-}
-
 
 /**
  * parse the xml file using xmldom
@@ -102,7 +88,32 @@ function parseManifest(target) {
   })
 }
 
+
+/**
+ * parse apk and return manifest
+ * @param  {String} apkPath apk path
+ * @return {Promise} resolve manifest
+ */
+async function parse(apkPath) {
+  const target = `${os.tmpdir()}/apktoolDecodes`
+  const cmd = `java -jar ${apktoolPath} d ${apkPath} -f -o ${target}`
+  await shell(cmd)
+  const MainfestFilePath = `${target}/AndroidManifest.xml`
+  const doc = await parseManifest(MainfestFilePath)
+  return parseDoc(doc)
+}
+
+/**
+ * parse AndroidManifest.xml
+ * @param  {String} MainfestFilePath path to AndroidManifest.xml
+ * @return {Promise} resovle manifest
+ */
+async function parseXML(MainfestFilePath) {
+  const doc = await parseManifest(MainfestFilePath)
+  return parseDoc(doc)
+}
+
 export default {
-  parse : parse,
-  parseXML: parseXML
+  parse,
+  parseXML,
 }

@@ -1,7 +1,7 @@
 export default class Manifest {
   constructor() {
     this._entry = ''
-    this._packageName =''
+    this._packageName = ''
     this._activities = []
     this._permissions = []
     this._receivers = []
