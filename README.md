@@ -33,7 +33,7 @@ org.jtb.alogcat.LogActivity
 
 # Requirements
 - Java 1.7
-- Node 4.4
+- Node >=0.12
 
 # Example 
 ```
