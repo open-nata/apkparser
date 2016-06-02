@@ -10,10 +10,11 @@ describe('testing apkparser', () => {
 
   it('should return manifest by parse ', async done => {
     const manifest = await Parser.parse(apkPath)
+
     assert.notEqual(manifest.activities.length, 0)
     assert.notEqual(manifest.receivers.length, 0)
     assert.notEqual(manifest.permissions.length, 0)
-    assert.equal('org.jtb.alogcat',manifest.packageName)
+    assert.equal('org.jtb.alogcat', manifest.packageName)
     assert.equal('org.jtb.alogcat.LogActivity', manifest.entry)
     done()
   })
