@@ -1,6 +1,6 @@
 {
   "name": "apkparser",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "parse android apk and extract the infomations from Mainifest",
   "main": "index.js",
   "scripts": {
