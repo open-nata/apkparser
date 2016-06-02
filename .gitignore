@@ -5,4 +5,4 @@ logs
 npm-debug.log*
 coverage
 .DS_Store
-assets
+.idea
