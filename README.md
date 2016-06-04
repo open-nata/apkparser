@@ -40,17 +40,18 @@ org.jtb.alogcat.LogActivity
 import apkparser from 'apkparser'
 const apkPath = 'path/to/apk'
 
-Parser.parse(apkPath).then((manifest) => {
+apkparser.parse(apkPath).then((manifest) => {
   console.log(manifest.permissions)
 })
 
 ```
 
 # API
-### parseXML(MainfestFilePath) 
- * parse AndroidManifest.xml
- * @param  {String} MainfestFilePath path to AndroidManifest.xml
- * @return {Promise} resovle manifest,see below
+### parse(apkPath, target = `${os.tmpdir()}/apktoolDecodes`)
+ * parse apk and return manifest
+ * @param  {String} apkPath apk path
+ * @param  {String} target target extract dir
+ * @return {Promise} resolve manifest
 
 ### parseXML(MainfestFilePath)
  * parse AndroidManifest.xml

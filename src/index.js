@@ -92,10 +92,10 @@ function parseManifest(target) {
 /**
  * parse apk and return manifest
  * @param  {String} apkPath apk path
+ * @param  {String} target target extract dir, default to ${os.tmpdir()}/apktoolDecodes
  * @return {Promise} resolve manifest
  */
-async function parse(apkPath) {
-  const target = `${os.tmpdir()}/apktoolDecodes`
+async function parse(apkPath, target = `${os.tmpdir()}/apktoolDecodes`) {
   const cmd = `java -jar ${apktoolPath} d ${apkPath} -f -o ${target}`
   await shell(cmd)
   const MainfestFilePath = `${target}/AndroidManifest.xml`
