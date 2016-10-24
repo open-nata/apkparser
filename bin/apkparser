@@ -1,11 +1,40 @@
 #!/usr/bin/env node
 
-const program = require('commander')
+var program = require('commander')
+var apkparser = require('../')
+var co = require('co')
 
 program
   .version(require('../package').version, '-v, --version')
   .usage('<command> [options]')
+  .option('-p, --apk-path <p>','specify the apk path to parse with')
+  .option('-m, --manifest-file <m>','specify the manifest xml file to parse with')
   .option('--verbose', 'run with more logging messages.')
   .parse(process.argv)
 
-console.log('hell')
+function *run(){
+  if(program.apkPath) {
+  var manifest  = yield apkparser.parse(program.apkPath)
+  console.log(manifest.permissions)
+  console.log(manifest.activities)
+  console.log(manifest.receivers)
+  console.log(manifest.packageName)
+  console.log(manifest.entry)
+  process.exit(0)
+  }
+
+  if(program.manifestFile) {
+    var manifest  = yield apkparser.parseXML(program.manifestFile)
+    console.log(manifest.permissions)
+    console.log(manifest.activities)
+    console.log(manifest.receivers)
+    console.log(manifest.packageName)
+    console.log(manifest.entry)
+    process.exit(0)
+  }
+}
+
+co(run)
+
+// /Users/Calvin/Develop/githubs/open-nata/apkparser/assets/app.apk
+
