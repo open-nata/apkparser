@@ -3,11 +3,12 @@
 var program = require('commander')
 var apkparser = require('../')
 var co = require('co')
+var path = require('path')
 
 program
   .version(require('../package').version, '-v, --version')
   .usage('<command> [options]')
-  .option('-p, --apk-path <p>','specify the apk path to parse with')
+  .option('-p, --apk-path <p>','specify the apk path to parse with',path.join(__dirname,'../assets/app.apk'))
   .option('-m, --manifest-file <m>','specify the manifest xml file to parse with')
   .option('--verbose', 'run with more logging messages.')
   .parse(process.argv)
@@ -36,5 +37,5 @@ function *run(){
 
 co(run)
 
-// /Users/Calvin/Develop/githubs/open-nata/apkparser/assets/app.apk
+//
 
